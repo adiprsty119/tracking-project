@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>GPS Tracking</title>
+
+    <!-- Leaflet CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      #map {
+        height: 500px;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>GPS Tracking dengan Python & Leaflet</h2>
+
+    <div style="margin-bottom: 10px">
+      <button onclick="startTracking()">▶ GPS Start</button>
+      <button onclick="stopTracking()">⏹ GPS Stop</button>
+
+      <input id="ipInput" placeholder="Masukkan IP" />
+      <button onclick="trackIP()">🌐 Track IP</button>
+    </div>
+
+    <div id="map"></div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- JS Lokal -->
+    <script src="{{ url_for('static', filename='map.js') }}"></script>
+  </body>
+</html>

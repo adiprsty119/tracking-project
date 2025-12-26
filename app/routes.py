@@ -4,7 +4,6 @@ from app import db
 from app.models import RoutePoint
 import requests
 
-
 # =============================
 # CACHE LOKASI TERAKHIR (OPSIONAL)
 # =============================

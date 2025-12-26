@@ -2,6 +2,7 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GPS Tracking</title>
 
     <!-- Leaflet CSS -->
@@ -10,28 +11,124 @@
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     />
 
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-      }
-      #map {
-        height: 500px;
-        margin-top: 10px;
-      }
-    </style>
+    <!-- Alpine.js -->
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+
+    <!-- Tailwind CSS -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/output.css') }}"
+    />
+
+    <!-- Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+    />
   </head>
-  <body>
-    <h2>GPS Tracking dengan Python & Leaflet</h2>
+  <body class="h-full bg-gray-100 text-gray-800">
+    <!-- Navbar -->
+    <header class="bg-white shadow">
+      <div
+        class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center"
+      >
+        <h1 class="text-xl font-semibold text-gray-900">
+          <i class="fa-solid fa-earth-americas"></i> GPS Tracking Dashboard
+        </h1>
+        <span class="text-sm text-gray-500"> Python • Flask • Leaflet </span>
+      </div>
+    </header>
 
-    <div style="margin-bottom: 10px">
-      <button onclick="startTracking()">▶ GPS Start</button>
-      <button onclick="stopTracking()">⏹ GPS Stop</button>
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-6 py-6">
+      <!-- Control Panel -->
+      <div class="bg-white rounded-xl shadow p-6 mb-6">
+        <h2 class="text-lg font-semibold mb-4">Kontrol Tracking</h2>
 
-      <input id="ipInput" placeholder="Masukkan IP" />
-      <button onclick="trackIP()">🌐 Track IP</button>
-    </div>
+        <div class="flex flex-wrap gap-3 items-center">
+          <div
+            x-data="{ tracking: false }"
+            class="flex flex-wrap gap-3 items-center"
+          >
+            <button
+              @click="tracking = true; startTracking()"
+              :disabled="tracking"
+              class="bg-green-500 disabled:bg-green-300 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium transition cursor-pointer"
+            >
+              <i class="fa-solid fa-circle-play mr-1"></i> GPS Start
+            </button>
 
-    <div id="map"></div>
+            <button
+              @click="tracking = false; stopTracking()"
+              :disabled="!tracking"
+              class="bg-red-500 disabled:bg-red-300 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium transition cursor-pointer"
+            >
+              <i class="fa-solid fa-stop mr-1"></i> GPS Stop
+            </button>
+          </div>
+
+          <!-- IP Input -->
+          <input
+            id="ipInput"
+            type="text"
+            placeholder="Masukkan IP Address"
+            class="flex-1 min-w-96 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+
+          <!-- Track IP -->
+          <button
+            onclick="trackIP()"
+            class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium transition cursor-pointer"
+          >
+            <i class="fa-solid fa-globe mr-1"></i> Track IP
+          </button>
+        </div>
+      </div>
+
+      <!-- Status Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+        <!-- Latitude -->
+        <div class="bg-white rounded-xl shadow p-4">
+          <div class="text-sm text-gray-500">Latitude</div>
+          <div id="latValue" class="text-xl font-semibold text-gray-800">-</div>
+        </div>
+
+        <!-- Longitude -->
+        <div class="bg-white rounded-xl shadow p-4">
+          <div class="text-sm text-gray-500">Longitude</div>
+          <div id="lngValue" class="text-xl font-semibold text-gray-800">-</div>
+        </div>
+
+        <!-- Time -->
+        <div class="bg-white rounded-xl shadow p-4">
+          <div class="text-sm text-gray-500">Last Update</div>
+          <div id="timeValue" class="text-xl font-semibold text-gray-800">
+            -
+          </div>
+        </div>
+      </div>
+
+      <!-- Map Card -->
+      <div class="bg-white rounded-xl shadow overflow-hidden">
+        <div class="px-6 py-3 border-b text-sm font-medium text-gray-600">
+          Peta Lokasi
+        </div>
+
+        <div id="map" class="h-96 w-full"></div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center text-sm text-gray-500 py-4">
+      © 2025 GPS Tracking System
+    </footer>
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
